@@ -22,18 +22,21 @@ import jp.fkmsoft.libs.inputtextdialog.R;
 public class InputTextDialogFragment extends DialogFragment {
     private static final String ARGS_TITLE = "title";
     private static final String ARGS_MESSAGE = "message";
+    private static final String ARGS_INIT_TEXT = "initText";
     private static final String ARGS_EXTRA = "extra";
 
     public static final String EXTRA_DATA = "extra";
 
+
     public static InputTextDialogFragment newInstance(Fragment target, int requestCode,
-                                                     String title, String message, Bundle extra) {
+                                                     String title, String message, String initText, Bundle extra) {
         InputTextDialogFragment fragment = new InputTextDialogFragment();
         fragment.setTargetFragment(target, requestCode);
         
         Bundle args = new Bundle();
         args.putString(ARGS_TITLE, title);
         args.putString(ARGS_MESSAGE, message);
+        args.putString(ARGS_INIT_TEXT, initText);
         args.putBundle(ARGS_EXTRA, extra);
         fragment.setArguments(args);
         
@@ -51,12 +54,14 @@ public class InputTextDialogFragment extends DialogFragment {
         Bundle args = getArguments();
         String title = args.getString(ARGS_TITLE);
         String message = args.getString(ARGS_MESSAGE);
+        String initText = args.getString(ARGS_INIT_TEXT);
 
         LayoutInflater inflater = LayoutInflater.from(activity);
         View root = inflater.inflate(R.layout.lib_dialog_input_text, null);
         TextView messageText = (TextView) root.findViewById(R.id.text_message);
         messageText.setText(message);
         mEdit = (EditText) root.findViewById(R.id.edit);
+        mEdit.setText(initText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title);
