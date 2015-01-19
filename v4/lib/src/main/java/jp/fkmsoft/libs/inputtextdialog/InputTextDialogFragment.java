@@ -13,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -72,6 +73,14 @@ public class InputTextDialogFragment extends DialogFragment {
         mEdit = (EditText) root.findViewById(R.id.edit);
         mEdit.setText(initText);
         mEdit.setInputType(inputType);
+        mEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+                }
+            }
+        });
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title);
@@ -80,15 +89,6 @@ public class InputTextDialogFragment extends DialogFragment {
         builder.setNegativeButton(android.R.string.cancel, mClickListener);
 
         return builder.create();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Activity activity = getActivity();
-        if (activity == null) { return; }
-        InputMethodManager manager = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-        manager.showSoftInput(mEdit, InputMethod.SHOW_FORCED);
     }
 
     @Override
